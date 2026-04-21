@@ -1,10 +1,13 @@
+import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { seedSections } from "./sections.seed";
 import { seedCalcDefs } from "./calc-defs.seed";
 import { seedValidationRules } from "./validation-rules.seed";
 import bcrypt from "bcryptjs";
 
-const db = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const db = new PrismaClient({ adapter, log: ["error"] });
 
 async function main() {
   console.log("Seeding database...");
